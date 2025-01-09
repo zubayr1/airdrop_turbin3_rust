@@ -174,7 +174,7 @@ mod tests {
     }
 
     #[test]
-    fn transfer_rest() {
+    fn rest_amount() {
         let json_data = fs::read_to_string("dev-wallet.json").expect("Couldn't find wallet file");
         let wallet: DevWallet =
             serde_json::from_str(&json_data).expect("Couldn't parse wallet file");
