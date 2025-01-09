@@ -13,3 +13,7 @@ https://explorer.solana.com/tx/2fUrHwJ8x6STWCinPw87yxhJhppgxASBQzhJqhFMMNuAYaTH1
 ### Enroll tx Link:
 
 https://explorer.solana.com/tx/498h5M2LrBbtQTQ9MhRxiopaA3tNnFPfYUo1x9T4c8eFfyc7yPHspK8iEohrDaDLanLo2rDinpkZNqRfek1fNoWS/?cluster=devnet
+
+### Enroll tx Link (new address):
+
+https://explorer.solana.com/tx/4FaySJTjytg35SNYB3MBTL3x1q9m9yFFC1KQyuVXDM48pTYYVWZcPJfzfiohLczTUeuujfMsLUPicuYwZofyaLZs?cluster=devnet
