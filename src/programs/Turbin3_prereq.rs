@@ -2,7 +2,7 @@ use solana_idlgen::idlgen;
 idlgen!(
     {
         "version": "0.1.0",
-        "name": "wba_prereq",
+        "name": "Turbin3_prereq",
         "metadata": {
             "address": "ADcaide4vBtKuyZQqdU689YqEGZMCmS4tL35bdTv9wJa"
         },
