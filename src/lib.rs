@@ -19,7 +19,7 @@ use std::{
 
 mod programs;
 
-use crate::programs::Turbin3_prereq::{CompleteArgs, UpdateArgs, WbaPrereqProgram};
+use crate::programs::Turbin3_prereq::{CompleteArgs, UpdateArgs, Turbin3PrereqProgram};
 
 #[derive(Deserialize)]
 struct DevWallet {
@@ -253,7 +253,7 @@ mod tests {
             Keypair::from_bytes(&wallet.private_key).expect("Invalid private key in wallet file");
 
         // creating PDA
-        let prereq = WbaPrereqProgram::derive_program_address(&[
+        let prereq = Turbin3PrereqProgram::derive_program_address(&[
             b"prereq",
             signer.pubkey().to_bytes().as_ref(),
         ]);
@@ -271,7 +271,60 @@ mod tests {
             .expect("Failed to get recent blockhash");
 
         // Create a transaction
-        let transaction = WbaPrereqProgram::complete(
+        let transaction = Turbin3PrereqProgram::complete(
+            &[&signer.pubkey(), &prereq, &system_program::id()],
+            &args,
+            Some(&signer.pubkey()),
+            &[&signer],
+            recent_blockhash,
+        );
+
+        let signature = rpc_client
+            .send_and_confirm_transaction(&transaction)
+            .expect("Failed to send transaction");
+
+        println!(
+            "Success! Check out your TX here: https://explorer.solana.com/tx/{}/?cluster=devnet",
+            signature
+        );
+    }
+
+    #[test]
+    fn update() {
+        let rpc_client = RpcClient::new(RPC_URL);
+
+        // Add better error handling for the wallet file
+        let json_data = fs::read_to_string("turbin3-wallet.json")
+            .expect("Error reading turbin3-wallet.json - make sure the file exists");
+
+        println!("Wallet file contents: {}", json_data); // Debug print
+
+        let wallet: DevWallet = serde_json::from_str(&json_data)
+            .expect("Error parsing wallet JSON - check the file format");
+
+        let signer =
+            Keypair::from_bytes(&wallet.private_key).expect("Invalid private key in wallet file");
+
+        // creating PDA
+        let prereq = Turbin3PrereqProgram::derive_program_address(&[
+            b"prereq",
+            signer.pubkey().to_bytes().as_ref(),
+        ]);
+
+        println!("Prereq PDA: {}", prereq);
+
+        // Define our instruction data
+        let args = UpdateArgs {
+            github: b"zubayr1".to_vec(),
+        };
+
+        // Get recent blockhash
+        let recent_blockhash = rpc_client
+            .get_latest_blockhash()
+            .expect("Failed to get recent blockhash");
+
+        // Create a transaction
+        let transaction = Turbin3PrereqProgram::update(
             &[&signer.pubkey(), &prereq, &system_program::id()],
             &args,
             Some(&signer.pubkey()),
